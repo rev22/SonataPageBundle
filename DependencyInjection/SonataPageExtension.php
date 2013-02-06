@@ -45,7 +45,6 @@ class SonataPageExtension extends Extension
         $loader->load('form.xml');
         $loader->load('cache.xml');
         $loader->load('twig.xml');
-        $loader->load('http_kernel.xml');
         $loader->load('consumer.xml');
         $loader->load('validators.xml');
 
@@ -59,11 +58,6 @@ class SonataPageExtension extends Extension
         $this->addClassesToCompile(array(
             'Sonata\\PageBundle\\Request\\SiteRequest'
         ));
-
-        $container->getDefinition('sonata.page.decorator_strategy')
-            ->replaceArgument(0, $config['ignore_routes'])
-            ->replaceArgument(1, $config['ignore_route_patterns'])
-            ->replaceArgument(2, $config['ignore_uri_patterns']);
 
         //Set the entity manager that should be used to store pages:
         $container->setAlias('sonata.page.entity_manager', $config['entity_manager']);
@@ -407,10 +401,6 @@ class SonataPageExtension extends Extension
                 $exceptions[$code] = sprintf('_page_internal_error_%s', $keyWord);
             }
         }
-
-        // add exception pages in exception_listener
-        $container->getDefinition('sonata.page.kernel.exception_listener')
-            ->replaceArgument(6, $exceptions);
 
         // add exception pages as default rendering parameters in page templates
         $container->getDefinition('sonata.page.template_manager')

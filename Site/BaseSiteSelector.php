@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Sonata\PageBundle\Model\SiteManagerInterface;
 use Sonata\PageBundle\Model\SiteInterface;
-use Sonata\PageBundle\CmsManager\DecoratorStrategyInterface;
 use Sonata\SeoBundle\Seo\SeoPageInterface;
 
 /**
@@ -28,8 +27,6 @@ use Sonata\SeoBundle\Seo\SeoPageInterface;
 abstract class BaseSiteSelector implements SiteSelectorInterface
 {
     protected $siteManager;
-
-    protected $decoratorStrategy;
 
     protected $seoPage;
 
@@ -42,13 +39,11 @@ abstract class BaseSiteSelector implements SiteSelectorInterface
 
     /**
      * @param SiteManagerInterface       $siteManager
-     * @param DecoratorStrategyInterface $decoratorStrategy
      * @param SeoPageInterface           $seoPage
      */
-    public function __construct(SiteManagerInterface $siteManager, DecoratorStrategyInterface $decoratorStrategy, SeoPageInterface $seoPage)
+    public function __construct(SiteManagerInterface $siteManager, SeoPageInterface $seoPage)
     {
         $this->siteManager       = $siteManager;
-        $this->decoratorStrategy = $decoratorStrategy;
         $this->seoPage           = $seoPage;
     }
 
@@ -125,10 +120,6 @@ abstract class BaseSiteSelector implements SiteSelectorInterface
      */
     final public function onKernelRequest(GetResponseEvent $event)
     {
-        if (!$this->decoratorStrategy->isRouteUriDecorable($event->getRequest()->getPathInfo())) {
-            return;
-        }
-
         $this->setRequest($event->getRequest());
 
         $this->handleKernelRequest($event);

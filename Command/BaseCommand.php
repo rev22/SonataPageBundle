@@ -66,22 +66,6 @@ abstract class BaseCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \Sonata\PageBundle\CmsManager\DecoratorStrategyInterface
-     */
-    public function getDecoratorStrategy()
-    {
-        return $this->getContainer()->get('sonata.page.decorator_strategy');
-    }
-
-    /**
-     * @return \Sonata\PageBundle\Listener\ExceptionListener
-     */
-    public function getErrorListener()
-    {
-        return $this->getContainer()->get('sonata.page.kernel.exception_listener');
-    }
-
-    /**
      * @param string $mode
      *
      * @return \Sonata\NotificationBundle\Backend\BackendInterface
